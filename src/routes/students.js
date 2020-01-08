@@ -4,6 +4,8 @@ const express = require("express");
 const router = express.Router();
 // User model
 let Student = require("../models/student.model");
+// Email validity
+const validateEmailAccessibility = require("../utilities/emailCheck");
 
 router.get("/", async (req, res) => {
     await Student.find()
@@ -29,8 +31,15 @@ router.get("/:id", async (req, res) => {
 });
 
 router.get("/check-email/:email", async (req, res) => {
-    const email = await Student.findOne({ email: req.params.email});
-    console.log(email);
+   await validateEmailAccessibility(req.params.email).then(
+       valid => {
+        if (valid) {
+            alert("Email is valid");
+          } else {
+            alert("Email already used");
+          }
+       }
+   );
 });
 
 router.post("/new", async (req, res) => {
