@@ -487,3 +487,4 @@ healthchecksdb
 MigrationBackup/
 
 # End of https://www.gitignore.io/api/node,macos,dotenv,visualstudio
+.vscode/launch.json
