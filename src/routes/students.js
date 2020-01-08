@@ -5,6 +5,10 @@ const router = express.Router();
 // User model
 let Student = require("../models/student.model");
 // Email validity
+// const { validateRules } = require("../middleware/validator");
+// const { isEmailValid } = require("../middleware/isValidEmail");
+const { rules, email } = require("../middleware/middleware.index");
+// Email exist in DB
 const validateEmailAccessibility = require("../utilities/emailCheck");
 
 router.get("/", async (req, res) => {
@@ -30,16 +34,14 @@ router.get("/:id", async (req, res) => {
         );
 });
 
-router.get("/check-email/:email", async (req, res) => {
-   await validateEmailAccessibility(req.params.email).then(
-       valid => {
-        if (valid) {
+router.get("/email/check-email", email.isEmailValid(), rules.validateRules, async (req, res) => {
+    await validateEmailAccessibility(req.body.email).then(valid => {
+        if (!valid) {
             res.send("Email is valid");
-          } else {
+        } else {
             res.send("Email already used");
-          }
-       }
-   );
+        }
+    });
 });
 
 router.post("/new", async (req, res) => {

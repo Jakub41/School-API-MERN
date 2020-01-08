@@ -1,0 +1,4 @@
+module.exports = {
+    rules: {...require("./validator")},
+    email: {...require("./isValidEmail")}
+};
