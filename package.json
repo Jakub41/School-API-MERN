@@ -21,9 +21,11 @@
         "express": "^4.17.1",
         "express-list-endpoints": "^4.0.1",
         "express-validator": "^6.3.1",
+        "express-winston": "^4.0.2",
         "mongoose": "^5.8.5",
         "mongoose-dateonly": "^1.0.6",
         "mongoose-type-email": "^1.0.12",
-        "morgan": "^1.9.1"
+        "morgan": "^1.9.1",
+        "winston": "^3.2.1"
     }
 }
