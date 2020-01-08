@@ -1,6 +1,5 @@
 const mongoose = require("../utilities/dbConnect");
 require("mongoose-type-email");
-mongoose.SchemaTypes.Email.defaults.message = "Email address is invalid";
 
 const schema = {
     name: {
@@ -13,7 +12,8 @@ const schema = {
     },
     email: {
         type: mongoose.SchemaTypes.Email,
-        required: true
+        required: true,
+        unique: true
     },
     dateOfBirth: {
         type: String,
