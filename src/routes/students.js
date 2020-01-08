@@ -28,6 +28,11 @@ router.get("/:id", async (req, res) => {
         );
 });
 
+router.get("/check-email/:email", async (req, res) => {
+    const email = await Student.findOne({ email: req.params.email});
+    console.log(email);
+});
+
 router.post("/new", async (req, res) => {
     const newStudent = new Student(req.body);
     await newStudent
@@ -38,23 +43,36 @@ router.post("/new", async (req, res) => {
                 data: req.body
             })
         )
-        .catch(err => res.status(400).json("Error: ", err));
+        .catch(err => res.status(400).json({ Error: err }));
 });
 
 router.put("/update/:id", async (req, res) => {
     await Student.findById(req.params.id)
         .then(student => {
-            student.name = req.body.username;
-            student.surname = req.body.description;
+            student.name = req.body.name;
+            student.surname = req.body.surname;
             student.dateOfBirth = req.body.dateOfBirth;
             student.email = req.body.email;
 
             student
                 .save()
-                .then(() => res.status(200).send("Student updated"))
-                .catch(err => res.status(400).json("Error: ", err));
+                .then(() =>
+                    res.json({
+                        message: "Student updated!",
+                        data: req.body
+                    })
+                )
+                .catch(err => res.status(400).json({ error: err }));
         })
-        .catch(err => res.status(404).json("Error: ", err));
+        .catch(err =>
+            res.status(404).json({ error: err, message: "Not found!" })
+        );
+});
+
+router.delete("/:id", async (req, res) => {
+    await Student.findByIdAndDelete(req.params.id)
+        .then(() => res.json("Deleted"))
+        .catch(err => res.status(400).json("Error: " + err));
 });
 
 module.exports = router;
