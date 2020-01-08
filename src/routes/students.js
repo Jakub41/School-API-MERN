@@ -34,15 +34,20 @@ router.get("/:id", async (req, res) => {
         );
 });
 
-router.get("/email/check-email", email.isEmailValid(), rules.validateRules, async (req, res) => {
-    await validateEmailAccessibility(req.body.email).then(valid => {
-        if (!valid) {
-            res.send("Email is valid");
-        } else {
-            res.send("Email already used");
-        }
-    });
-});
+router.get(
+    "/email/check-email",
+    email.isEmailValid(),
+    rules.validateRules,
+    async (req, res) => {
+        await validateEmailAccessibility(req.body.email)
+            .then(valid => {
+                !valid
+                    ? res.send("Email is valid")
+                    : res.send("Email already used");
+            })
+            .catch(err => res.status(400).json({ Error: err }));
+    }
+);
 
 router.post("/new", async (req, res) => {
     const newStudent = new Student(req.body);
