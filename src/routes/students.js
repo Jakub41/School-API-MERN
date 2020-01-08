@@ -34,9 +34,9 @@ router.get("/check-email/:email", async (req, res) => {
    await validateEmailAccessibility(req.params.email).then(
        valid => {
         if (valid) {
-            alert("Email is valid");
+            res.send("Email is valid");
           } else {
-            alert("Email already used");
+            res.send("Email already used");
           }
        }
    );
