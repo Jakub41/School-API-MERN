@@ -1,10 +1,10 @@
 // Adding body module of express validator
-const { body } = require("express-validator");
+const { check } = require("express-validator");
 
 // Email validator
 const isEmailValid = () => {
     return [
-        body("email", "Invalid email")
+        check("email", "Invalid email")
             .exists()
             .notEmpty()
             .isEmail()

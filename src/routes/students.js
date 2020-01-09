@@ -5,8 +5,6 @@ const router = express.Router();
 // User model
 let Student = require("../models/student.model");
 // Email validity
-// const { validateRules } = require("../middleware/validator");
-// const { isEmailValid } = require("../middleware/isValidEmail");
 const { rules, email } = require("../middleware/middleware.index");
 // Email exist in DB
 const validateEmailAccessibility = require("../utilities/emailCheck");
@@ -42,7 +40,7 @@ router.get(
         await validateEmailAccessibility(req.body.email)
             .then(valid => {
                 !valid
-                    ? res.send("Email is valid")
+                    ? res.send("Email is free to use")
                     : res.send("Email already used");
             })
             .catch(err => res.status(400).json({ Error: err }));
@@ -65,11 +63,7 @@ router.post("/new", async (req, res) => {
 router.put("/update/:id", async (req, res) => {
     await Student.findById(req.params.id)
         .then(student => {
-            student.name = req.body.name;
-            student.surname = req.body.surname;
-            student.dateOfBirth = req.body.dateOfBirth;
-            student.email = req.body.email;
-
+            student.set(req.body);
             student
                 .save()
                 .then(() =>
