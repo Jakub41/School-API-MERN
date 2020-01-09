@@ -7,7 +7,7 @@ let Student = require("../models/student.model");
 // Email validity
 const { rules, email } = require("../middleware/middleware.index");
 // Email exist in DB
-const validateEmailAccessibility = require("../utilities/emailCheck");
+const isEmailAvailable = require("../utilities/emailCheck");
 
 router.get("/", async (req, res) => {
     await Student.find()
@@ -37,7 +37,7 @@ router.get(
     email.isEmailValid(),
     rules.validateRules,
     async (req, res) => {
-        await validateEmailAccessibility(req.body.email)
+        await isEmailAvailable(req.body.email)
             .then(valid => {
                 !valid
                     ? res.send("Email is free to use")
