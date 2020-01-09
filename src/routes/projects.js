@@ -21,7 +21,7 @@ router.post("/:id", async (req, res) => {
             return db.Student.findOneAndUpdate(
                 { _id: req.params.id },
                 { $push: { projects: project._id } },
-                // { new: true } tells the query that we want it to return the updated Product -- it returns the original by default
+                // { new: true } tells the query that we want it to return the updated Student -- it returns the original by default
                 { new: true }
             );
         })

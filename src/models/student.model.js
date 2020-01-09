@@ -21,7 +21,7 @@ const schema = {
     },
     projects: [{
         type: mongoose.Types.ObjectId,
-        ref: "Project"
+        ref: "project"
     }]
 };
 
