@@ -1,22 +1,22 @@
 // Express
 const express = require("express");
+// Student model
+let db = require("../models/models.index");
 // Router
 const router = express.Router();
-// User model
-let Student = require("../models/student.model");
 // Email validity
 const { rules, email } = require("../middleware/middleware.index");
 // Email exist in DB
 const isEmailAvailable = require("../utilities/emailCheck");
 
 router.get("/", async (req, res) => {
-    await Student.find()
+    await db.Student.find({})
         .then(students => res.json(students))
         .catch(err => res.status(400).json("Error ", err));
 });
 
 router.get("/:id", async (req, res) => {
-    await Student.findById(req.params.id)
+    await db.Student.findById(req.params.id)
         .then(student =>
             res.json({
                 message: "Student found!",
@@ -30,6 +30,16 @@ router.get("/:id", async (req, res) => {
                 error: err
             })
         );
+});
+
+// GET A student by ID and populating it's projects
+router.get("/:id/projects", async (req, res) => {
+    // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
+    await db.Student.findOne({ _id: req.params.id })
+        // ..and populate all of the notes associated with it
+        .populate("projects")
+        .then(student => res.json(student))
+        .catch(err => res.json(err));
 });
 
 router.get(
@@ -48,7 +58,7 @@ router.get(
 );
 
 router.post("/new", async (req, res) => {
-    const newStudent = new Student(req.body);
+    const newStudent = new db.Student(req.body);
     await newStudent
         .save()
         .then(() =>
@@ -61,7 +71,7 @@ router.post("/new", async (req, res) => {
 });
 
 router.put("/update/:id", async (req, res) => {
-    await Student.findById(req.params.id)
+    await db.Student.findById(req.params.id)
         .then(student => {
             student.set(req.body);
             student
@@ -80,7 +90,7 @@ router.put("/update/:id", async (req, res) => {
 });
 
 router.delete("/:id", async (req, res) => {
-    await Student.findByIdAndDelete(req.params.id)
+    await db.Student.findByIdAndDelete(req.params.id)
         .then(() => res.json("Deleted"))
         .catch(err => res.status(400).json("Error: " + err));
 });

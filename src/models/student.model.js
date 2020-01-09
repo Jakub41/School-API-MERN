@@ -18,7 +18,11 @@ const schema = {
     dateOfBirth: {
         type: String,
         required: true
-    }
+    },
+    projects: [{
+        type: mongoose.Types.ObjectId,
+        ref: "Project"
+    }]
 };
 
 const collectionName = "student";
