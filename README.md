@@ -16,4 +16,6 @@
  ┗ 📂utilities
  ┃ ┣ 📜dbConnect.js
  ┃ ┗ 📜emailCheck.js
+
+ 📜server.js
 ```
