@@ -39,15 +39,15 @@ app.use(
 app.use(require("./src/routes/index.routes"));
 
 // express-winston errorLogger makes sense AFTER the router.
-app.use(expressWinston.errorLogger({
-    transports: [
-      new winston.transports.Console()
-    ],
-    format: winston.format.combine(
-      winston.format.colorize(),
-      winston.format.json()
-    )
-  }));
+app.use(
+    expressWinston.errorLogger({
+        transports: [new winston.transports.Console()],
+        format: winston.format.combine(
+            winston.format.colorize(),
+            winston.format.json()
+        )
+    })
+);
 
 app.use((req, res) => {
     res.status(200).send({
