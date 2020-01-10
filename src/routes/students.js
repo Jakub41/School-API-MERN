@@ -5,7 +5,11 @@ let db = require("../models/models.index");
 // Router
 const router = express.Router();
 // Email validity
-const { rules, email } = require("../middleware/middleware.index");
+const {
+    rules,
+    email,
+    isValidSchema
+} = require("../middleware/middleware.index");
 // Email exist in DB
 const isEmailAvailable = require("../utilities/emailCheck");
 
@@ -87,6 +91,28 @@ router.put("/update/:id", async (req, res) => {
         .catch(err =>
             res.status(404).json({ error: err, message: "Not found!" })
         );
+});
+
+router.patch("/:id", async (req, res) => {
+    await db.Student.findById(req.params.id, (err, student) => {
+        if (req.body._id) delete req.body._id;
+
+        for (let s in req.body) {
+            student[s] = req.body[s];
+        }
+
+        student
+            .save()
+            .then(() =>
+                res.json({
+                    message: "Student updated!",
+                    data: student
+                })
+            )
+            .catch(err => res.status(400).json({ error: err }));
+    }).catch(err =>
+        res.status(404).json({ error: err, message: "Not found!" })
+    );
 });
 
 router.delete("/:id", async (req, res) => {
