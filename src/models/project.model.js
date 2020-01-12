@@ -1,4 +1,5 @@
 const mongoose = require("../utilities/dbConnect");
+const { isURL } = require("validator");
 
 const schema = {
     name: {
@@ -16,7 +17,11 @@ const schema = {
     },
     link: {
         type: String,
-        required: false
+        required: false,
+        validate: {
+            validator: string => isURL(string),
+            message: "URL is not valid"
+        }
     }
 };
 
